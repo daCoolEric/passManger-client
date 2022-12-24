@@ -10,6 +10,9 @@ import axios from 'axios';
 import { useState } from 'react';
 import Password from '../features/Password';
 import { useParams } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { setPassword } from '../context/features/url/passwordSlice';
+
 
 
 const Wrapper = styled.div`
@@ -20,6 +23,7 @@ const Wrapper = styled.div`
   flex-direction: row;
   background-image: url(${bgImg});
   background-size: 100% 100vh;
+  overflow: hidden;
 `
 const SideBarContainer = styled.div`
   // outline: 2px solid red;
@@ -52,6 +56,7 @@ const MainContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  overflow: scroll;
 
 `
 
@@ -60,18 +65,25 @@ function HomePage() {
   useEffect(() => {
     async function getAccounts() {
       try {
-        const response = await axios.get(`http://localhost:5500/api/user/accounts/${userid}/all`);
-        console.log(response.data);
+        const response = await axios.get(`https://passerver.onrender.com/api/user/accounts/${userid}/all`);
+        console.log(response);
         setAllAccounts(response.data);
+        
+        
       } catch (error) {
         console.error(error);
       }
     }
+    // async function revealPassword(){
+    //   // const response = await axios.post(`https://passerver.onrender.com/api/user/accounts/${userid}/emails/decrypt-password`);
+    //   console.log("clicked");
+    // }
+    // revealPassword();
     getAccounts();
   }, [userid])
 
   const [allAccounts, setAllAccounts] = useState([]);
-  console.log(allAccounts);
+  // console.log(allAccounts);
   return (
     <Wrapper>
         <SideBarContainer>

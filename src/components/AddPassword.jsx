@@ -146,9 +146,10 @@ function AddPassword() {
           userName: userName,
           password: password,
         });
-        window.location = `/user/${response.data.result.userID}/home`
+        window.location = `/user/${userid}/home`
+       
         
-        // console.log(response.status);
+        console.log(response);
         // setAllAccounts(response.data);
       } catch (error) {
         console.error(error);
