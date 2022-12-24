@@ -162,7 +162,7 @@ function Password({userName, accountName, password}) {
             </AccountNameContainer>
             <AccountDetailsContainer>
                 <PasswordContainer>
-                    {password}
+                    {password?password: "XXXXXX"}
                 </PasswordContainer>
                 <VisibilityContainer onClick={handleClick}><img src={openEyeImg} alt="" srcset="" style={{width: "100%"}} /></VisibilityContainer>
             </AccountDetailsContainer>

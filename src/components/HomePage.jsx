@@ -100,7 +100,7 @@ function HomePage() {
                 key = {account._id} 
                 accountName = {account.accountName}
                 userName = {account.userName}
-                password = {account.password}
+                password = {account.password || account.passcode }
                 /> 
               )
             })}
