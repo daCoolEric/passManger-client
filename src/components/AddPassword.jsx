@@ -141,7 +141,7 @@ function AddPassword() {
     }
     async function createUser() {
       try {
-        const response = await axios.post(`http://localhost:5500/api/user/accounts/${userid}/emails/add-email`, {
+        const response = await axios.post(`https://passerver.onrender.com/api/user/accounts/${userid}/emails/add-email`, {
           accountName: accountName,  
           userName: userName,
           password: password,
