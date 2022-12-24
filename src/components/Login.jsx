@@ -5,6 +5,7 @@ import bgImg from '../images/loginpath.png';
 import emailImg from '../images/email.png';
 import padlockImg from '../images/padlock.png';
 import axios from 'axios';
+import spinner from '../images/Spinner-1s-200px.gif'
 import { useState } from 'react';
 
 const Wrapper = styled.div`
@@ -134,22 +135,44 @@ const InfoSection = styled.div`
   justify-content: center;
   align-items: center;
 `
+const LoadingModal = styled.div`
+  // outline: 2px solid red;
+  width: 100%;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`
+const LoadingContent = styled.div`
+  // outline: 2px solid red;
+  width: 80%;
+  height: 50vh;
+  background-color: rgba(255, 255, 255, 1);
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`
+
 
 
 
 function Login() {
   const [email,setEmail] = useState('');
   const [password,setPassword] = useState('');
- 
+  const [loader, setLoader] = useState('hidden');
   const submitLogin = () => {
-        
+    setLoader("visible");
     async function authUser() {
       try {
         const response = await axios.post("https://passerver.onrender.com/api/user/signin", {
           email: email,
           password: password,
         });
-
+        setLoader("hidden");
         window.location = `/user/${response.data.result._id}/home`
         
         
@@ -188,6 +211,11 @@ function Login() {
             <InfoSection>Don't have an account? <span style={{marginLeft: "10px", textDecoration: "none"}}> <Link to="/register" style={{textDecoration: "none"}}>Sign Up</Link></span></InfoSection>
           </SubmitSection>
         </LoginContent>
+        <LoadingModal style={{visibility: loader }}>
+            <LoadingContent> 
+              <img src={spinner} alt="" style={{width: "25%"}} />
+            </LoadingContent>
+        </LoadingModal>
       </LoginContainer>
     </Wrapper>    
   )
