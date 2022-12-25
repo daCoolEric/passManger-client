@@ -157,21 +157,28 @@ function HomePage() {
     getAccounts();
   }, [userid])
 
+  const passwordId = useSelector((state) => state.passwordId.value);
+
   // delete function
   const handleClick = () => {
     dispatch(setLoaderState("visible"));
     dispatch(setDeleteState("hidden"));
+    // console.log(passwordId);
     async function deletePassword() {
       try {
-        // const response = await axios.get(`https://passerver.onrender.com/api/user/accounts/${userid}/all`);
-        // console.log(response);
-        // setAllAccounts(response.data);
-        
+        const response = await axios.delete(`https://passerver.onrender.com/api/user/accounts/${userid}/emails/${passwordId}`,{
+          id: passwordId,
+          userID: userid
+        });
+        window.location = `/user/${userid}/home`;
+        console.log(response);
+        setAllAccounts(response.data);
         
       } catch (error) {
         console.error(error);
       }
     }
+    deletePassword();
 
   }
 
@@ -188,9 +195,11 @@ function HomePage() {
           </NavBarContainer>
           <MainContainer>
             {allAccounts.map(account => {
+              // console.log(account._id);
               return (
                 <Password 
                 key = {account._id} 
+                id= {account._id}
                 accountName = {account.accountName}
                 userName = {account.userName}
                 password = {account.password || account.passcode }

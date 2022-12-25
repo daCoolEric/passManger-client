@@ -5,8 +5,12 @@ import editImg from "../images/edit.png";
 import deleteImg from "../images/delete.png";
 import openEyeImg from "../images/eyeOpen.png";
 import axios from 'axios';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setDeleteState } from '../context/features/url/deleteSlice';
+import { setPasswordId } from '../context/features/url/passwordIDSlice';
+
+
+
 
 
 
@@ -135,8 +139,9 @@ const DeleteContainer = styled.div`
 `
 
 
-function Password({userName, accountName, password}) {
+function Password({id, userName, accountName, password}) {
     const { userid } = useParams();
+    
     const dispatch = useDispatch();
     const handleClick = () => {
         async function revealPassword(){
@@ -145,6 +150,12 @@ function Password({userName, accountName, password}) {
         }
         revealPassword();
         
+    }
+    const handleDelete = () => {
+        dispatch(setDeleteState("visible"));
+        dispatch(setPasswordId(id));
+       
+       
     }
     
   return (
@@ -171,7 +182,7 @@ function Password({userName, accountName, password}) {
         </InfoContainer>
         <ActionContainer>
             <EditContainer><img src={editImg} alt="" srcset="" style={{width: "100%"}}/></EditContainer>
-            <DeleteContainer onClick={() => dispatch(setDeleteState("visible"))} ><img src={deleteImg} alt="" srcset="" style={{width: "100%"}}/></DeleteContainer>  
+            <DeleteContainer onClick={handleDelete} ><img src={deleteImg} alt="" srcset="" style={{width: "100%"}}/></DeleteContainer>  
         </ActionContainer>
     </Wrapper>
 
