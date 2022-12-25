@@ -5,6 +5,7 @@ import bgImg from '../images/loginpath.png';
 import emailImg from '../images/email.png';
 import padlockImg from '../images/padlock.png';
 import userImg from '../images/user.png';
+import spinner from '../images/Spinner-1s-200px.gif';
 import axios from 'axios';
 import { useState } from 'react';
 
@@ -125,6 +126,29 @@ const InfoSection = styled.div`
   justify-content: center;
   align-items: center;
 `
+const LoadingModal = styled.div`
+  // outline: 2px solid red;
+  width: 100%;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`
+const LoadingContent = styled.div`
+  // outline: 2px solid red;
+  width: 80%;
+  height: 50vh;
+  background-color: rgba(255, 255, 255, 1);
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`
+
+
 
 
 
@@ -134,11 +158,13 @@ function AddPassword() {
   const [userName,setUserName] = useState('');
   const [password,setPassword] = useState('');
   const [confirmPass,setConfirmPass] = useState('');
+  const [loader, setLoader] = useState('hidden');
   
   const handleSubmit = () => {
     if(password !== confirmPass){
       alert("The two passwords are not the same");
     }
+    setLoader("visible");
     async function createUser() {
       try {
         const response = await axios.post(`https://passerver.onrender.com/api/user/accounts/${userid}/emails/add-email`, {
@@ -147,6 +173,7 @@ function AddPassword() {
           password: password,
         });
         window.location = `/user/${userid}/home`
+        setLoader("hidden");
        
         
         console.log(response);
@@ -197,6 +224,11 @@ function AddPassword() {
             <InfoSection><span style={{marginLeft: "10px", textDecoration: "none"}}> <Link to={`/user/${userid}/home`} style={{textDecoration: "none"}}>Go Back</Link></span></InfoSection>
           </SubmitSection>
         </LoginContent>
+        <LoadingModal style={{visibility: loader }}>
+            <LoadingContent> 
+              <img src={spinner} alt="" style={{width: "25%"}} />
+            </LoadingContent>
+        </LoadingModal>
       </LoginContainer>
 
       

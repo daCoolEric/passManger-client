@@ -5,8 +5,9 @@ import editImg from "../images/edit.png";
 import deleteImg from "../images/delete.png";
 import openEyeImg from "../images/eyeOpen.png";
 import axios from 'axios';
-import { useSelector, useDispatch } from 'react-redux';
-import { setPassword } from '../context/features/url/passwordSlice';
+import { useDispatch } from 'react-redux';
+import { setDeleteState } from '../context/features/url/deleteSlice';
+
 
 
 const Wrapper = styled.div`
@@ -136,6 +137,7 @@ const DeleteContainer = styled.div`
 
 function Password({userName, accountName, password}) {
     const { userid } = useParams();
+    const dispatch = useDispatch();
     const handleClick = () => {
         async function revealPassword(){
             // const response = await axios.post(`https://passerver.onrender.com/api/user/accounts/${userid}/emails/decrypt-password`);
@@ -169,7 +171,7 @@ function Password({userName, accountName, password}) {
         </InfoContainer>
         <ActionContainer>
             <EditContainer><img src={editImg} alt="" srcset="" style={{width: "100%"}}/></EditContainer>
-            <DeleteContainer><img src={deleteImg} alt="" srcset="" style={{width: "100%"}}/></DeleteContainer>  
+            <DeleteContainer onClick={() => dispatch(setDeleteState("visible"))} ><img src={deleteImg} alt="" srcset="" style={{width: "100%"}}/></DeleteContainer>  
         </ActionContainer>
     </Wrapper>
 
