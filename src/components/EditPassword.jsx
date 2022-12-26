@@ -6,6 +6,7 @@ import emailImg from '../images/email.png';
 import padlockImg from '../images/padlock.png';
 import userImg from '../images/user.png';
 import spinner from '../images/Spinner-1s-200px.gif';
+import alertIcon from '../images/alert-icon-1562.png';
 import axios from 'axios';
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
@@ -13,6 +14,9 @@ import { setAccountNameState } from '../context/features/url/passwordInfoStates/
 import { setUserNameState } from '../context/features/url/passwordInfoStates/userNameSlice';
 import { setPasswordState } from '../context/features/url/passwordInfoStates/passwordSlice';
 import { setConfirmPasswordState } from '../context/features/url/passwordInfoStates/confirmPasswordSlice';
+import { setLoaderState } from '../context/features/url/loaderSlice';
+import { setUpdateState } from '../context/features/url/updateSlice';
+
 
 
 const Wrapper = styled.div`
@@ -154,11 +158,58 @@ const LoadingContent = styled.div`
   align-items: center;
 `
 
+const DeleteContent = styled.div`
+  // outline: 2px solid red;
+  width: 90%;
+  height: 50vh;
+  background-color: rgba(255, 255, 255, 1);
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+`
+const AlertMessage = styled.div`
+  // outline: 2px solid red;
+  width: 70%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 700;
+  font-size: 30px;
+  color: #353535;
+  
+`
+const ButtonContainer = styled.div`
+  // outline: 2px solid red;
+  width: 90%;
+  height: 20%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  
+`
+const Button = styled.div`
+  // outline: 2px solid red;
+  width: 46%;
+  height: 90%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 23px;
+  color: #fff;
+  font-weight: 600;
+  border-radius: 10px;
+`
+
+
 
 
 
 
 function EditPassword() {
+  const updateState = useSelector((state) => state.update.value);
+  const loaderState = useSelector((state) => state.loader.value);
   const { userid } = useParams();
   const [loader, setLoader] = useState('hidden');
   const accountName = useSelector((state) => state.accountName.value);
@@ -169,11 +220,9 @@ function EditPassword() {
   const dispatch = useDispatch();
   
   const handleSubmit = () => {
+    dispatch(setUpdateState("hidden"));
+    dispatch(setLoaderState("visible"));
     
-    if(password !== confirmPassword){
-      alert("The two passwords are not the same");
-    }
-    setLoader("visible");
     async function editPassword() {
       try {
         const response = await axios.patch(`https://passerver.onrender.com/api/user/accounts/${userid}/emails/${passwordId}`, {
@@ -182,7 +231,7 @@ function EditPassword() {
           password: password,
         });
         window.location = `/user/${userid}/home`
-        setLoader("hidden");
+        dispatch(setLoaderState("hidden"));
        
         
         console.log(response);
@@ -195,6 +244,7 @@ function EditPassword() {
     }
     editPassword();
   }
+
   return (
     <Wrapper>
       <TextContainer>Edit a Password</TextContainer>
@@ -229,11 +279,33 @@ function EditPassword() {
             
           </PersonalInfo>
           <SubmitSection>
-            <LoginButton onClick={handleSubmit} >Update Password</LoginButton>
+            <LoginButton onClick={()=>{ password !== confirmPassword? alert("The two passwords are not the same") :dispatch(setUpdateState("visible"))}} >Update Password</LoginButton>
             <InfoSection><span style={{marginLeft: "10px", textDecoration: "none"}}> <Link to={`/user/${userid}/home`} style={{textDecoration: "none"}}>Go Back</Link></span></InfoSection>
           </SubmitSection>
         </LoginContent>
-        <LoadingModal style={{visibility: loader }}>
+        <LoadingModal style={{visibility: updateState }}>
+            <DeleteContent> 
+              <img src={alertIcon} alt="" style={{width: "30%",  marginBottom: "-10px"}} />
+              <AlertMessage>
+                Are you sure you want to update?
+              </AlertMessage>
+              <ButtonContainer>
+                <Button style={{backgroundColor: "#FF3131"}}
+                onClick={handleSubmit}
+                >
+                  Yes
+                </Button>
+                <Button
+                style= {{backgroundColor: "#19BA4A"}}
+                onClick={() => dispatch(setUpdateState("hidden"))}
+                >
+                  No
+                </Button>
+              </ButtonContainer>
+              
+            </DeleteContent>
+        </LoadingModal>
+        <LoadingModal style={{visibility: loaderState }}>
             <LoadingContent> 
               <img src={spinner} alt="" style={{width: "25%"}} />
             </LoadingContent>

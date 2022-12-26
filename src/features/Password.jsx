@@ -11,7 +11,7 @@ import { setPasswordId } from '../context/features/url/passwordIDSlice';
 import { setAccountNameState } from '../context/features/url/passwordInfoStates/accountNameSlice';
 import { setUserNameState } from '../context/features/url/passwordInfoStates/userNameSlice';
 import { setPasswordState } from '../context/features/url/passwordInfoStates/passwordSlice';
-
+import { setUpdateState } from '../context/features/url/updateSlice';
 
 
 
@@ -169,6 +169,7 @@ function Password({id, userName, accountName, password}) {
         dispatch(setPasswordId(id));
        
        
+       
     }
     
   return (
@@ -194,7 +195,7 @@ function Password({id, userName, accountName, password}) {
             </AccountDetailsContainer>
         </InfoContainer>
         <ActionContainer>
-            <EditContainer onClick={handleEdit}>
+            <EditContainer onClick={()=>{handleEdit()}}>
                 <Link to={`/user/${userid}/edit-password`} style={{ textDecoration: "none"}}>
                     <img src={editImg} alt="" srcset="" style={{width: "100%"}}/>
                 </Link>

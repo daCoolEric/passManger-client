@@ -6,6 +6,7 @@ import accountNameReducer from './features/url/passwordInfoStates/accountNameSli
 import userNameReducer from './features/url/passwordInfoStates/userNameSlice';
 import passwordReducer from './features/url/passwordInfoStates/passwordSlice';
 import confirmPasswordReducer from './features/url/passwordInfoStates/confirmPasswordSlice';
+import updateReducer from './features/url/updateSlice';
 
 
 export const store = configureStore({
@@ -17,6 +18,7 @@ export const store = configureStore({
     userName: userNameReducer,
     password: passwordReducer,
     confirmPassword: confirmPasswordReducer,
+    update: updateReducer,
 
     
   },
