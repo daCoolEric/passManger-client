@@ -1,5 +1,5 @@
 import React from 'react';
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import styled from 'styled-components';
 import editImg from "../images/edit.png";
 import deleteImg from "../images/delete.png";
@@ -8,6 +8,10 @@ import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { setDeleteState } from '../context/features/url/deleteSlice';
 import { setPasswordId } from '../context/features/url/passwordIDSlice';
+import { setAccountNameState } from '../context/features/url/passwordInfoStates/accountNameSlice';
+import { setUserNameState } from '../context/features/url/passwordInfoStates/userNameSlice';
+import { setPasswordState } from '../context/features/url/passwordInfoStates/passwordSlice';
+
 
 
 
@@ -157,6 +161,15 @@ function Password({id, userName, accountName, password}) {
        
        
     }
+
+    const handleEdit = () => {
+        dispatch(setAccountNameState(accountName));
+        dispatch(setUserNameState(userName));
+        dispatch(setPasswordState(password));
+        dispatch(setPasswordId(id));
+       
+       
+    }
     
   return (
     <Wrapper>
@@ -181,7 +194,12 @@ function Password({id, userName, accountName, password}) {
             </AccountDetailsContainer>
         </InfoContainer>
         <ActionContainer>
-            <EditContainer><img src={editImg} alt="" srcset="" style={{width: "100%"}}/></EditContainer>
+            <EditContainer onClick={handleEdit}>
+                <Link to={`/user/${userid}/edit-password`} style={{ textDecoration: "none"}}>
+                    <img src={editImg} alt="" srcset="" style={{width: "100%"}}/>
+                </Link>
+            </EditContainer>
+         
             <DeleteContainer onClick={handleDelete} ><img src={deleteImg} alt="" srcset="" style={{width: "100%"}}/></DeleteContainer>  
         </ActionContainer>
     </Wrapper>

@@ -1,17 +1,23 @@
 import { configureStore } from '@reduxjs/toolkit';
-import urlReducer from "../context/features/url/urlSlice";
-import passwordReducer from './features/url/passwordSlice';
 import deleteReducer from './features/url/deleteSlice';
 import loaderReducer from './features/url/loaderSlice';
 import passwordIDReducer from './features/url/passwordIDSlice';
+import accountNameReducer from './features/url/passwordInfoStates/accountNameSlice';
+import userNameReducer from './features/url/passwordInfoStates/userNameSlice';
+import passwordReducer from './features/url/passwordInfoStates/passwordSlice';
+import confirmPasswordReducer from './features/url/passwordInfoStates/confirmPasswordSlice';
 
 
 export const store = configureStore({
   reducer: {
-    url: urlReducer,
-    password: passwordReducer,
     delete: deleteReducer,
     loader: loaderReducer,
     passwordId: passwordIDReducer,
+    accountName: accountNameReducer,
+    userName: userNameReducer,
+    password: passwordReducer,
+    confirmPassword: confirmPasswordReducer,
+
+    
   },
 })
