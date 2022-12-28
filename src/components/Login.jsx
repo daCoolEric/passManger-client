@@ -5,8 +5,14 @@ import bgImg from '../images/loginpath.png';
 import emailImg from '../images/email.png';
 import padlockImg from '../images/padlock.png';
 import axios from 'axios';
-import spinner from '../images/Spinner-1s-200px.gif'
+import spinner from '../images/Spinner-1s-200px.gif';
+import openEyeImg from "../images/eyeOpen.png";
+import closeEyeImg  from "../images/eyeClose.png";
+import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
+import { setPasswordId } from '../context/features/url/passwordIDSlice';
+import { setPwdEyeOpenState } from '../context/features/url/passwordInfoStates/pwdEyeOpenSlice';
+import { setPwdEyeCloseState } from '../context/features/url/passwordInfoStates/pwdEyeCloseSlice';
 
 const Wrapper = styled.div`
   // outline: 2px solid red;
@@ -74,7 +80,6 @@ const IconBox = styled.div`
 const InputContainer = styled.input`
   // outline: 2px solid red;
   height: 80%;
-  width: 87%;
   font-size: 20px;
   color: #6a3cf7;
   border-style: none;
@@ -91,6 +96,18 @@ const PasswordContainer = styled.div`
   justify-content: space-between;
   align-items: center;
   border-bottom: 2px solid #6a3cf7;
+`
+
+const VisibilityContainer = styled.div`
+    // outline: 2px solid blue;
+    width: 11%;
+    height: 100%;
+    display: flex;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    
+
 `
 
 const ForgotPasswordContainer = styled.div`
@@ -160,10 +177,37 @@ const LoadingContent = styled.div`
 
 
 
+
 function Login() {
+  const pwdEyeCloseState = useSelector((state) => state.pwdEyeClose.value);
+    const pwdEyeOpenState = useSelector((state) => state.pwdEyeOpen.value);
   const [email,setEmail] = useState('');
   const [password,setPassword] = useState('');
   const [loader, setLoader] = useState('hidden');
+  const [passwordStatus,setPasswordStatus] = useState('password');
+  const dispatch = useDispatch();
+
+  const handleClick = async () => {
+        if(pwdEyeCloseState === "visible"){
+            dispatch(setPwdEyeCloseState("hidden"));
+            dispatch(setPwdEyeOpenState("visible"));
+            setPasswordStatus("text");
+        }else{
+            dispatch(setPwdEyeCloseState("visible"));
+            dispatch(setPwdEyeOpenState("hidden"));
+            setPasswordStatus("password");
+        }
+
+    
+    async function revealPassword(){
+        // const response = await axios.post(`https://passerver.onrender.com/api/user/accounts/${userid}/emails/decrypt-password`);
+        // console.log("clicked");
+    }
+    revealPassword();
+    
+}
+
+
   const submitLogin = () => {
     setLoader("visible");
     async function authUser() {
@@ -194,13 +238,18 @@ function Login() {
           <PersonalInfo>
             <EmailContainer>
               <IconBox><img src={emailImg} alt="email icon" style={{ width: "80%" }} /></IconBox>
-              <InputContainer type='text' placeholder='Email' onChange={(e) => { setEmail(e.target.value) }}/>
+              <InputContainer type='text' placeholder='Email' onChange={(e) => { setEmail(e.target.value) }} style={{ width: "87%" }}/>
             </EmailContainer>
             <PasswordContainer>
             <IconBox><img src={padlockImg} alt="email icon" style={{ width: "80%" }} /></IconBox>
-              <InputContainer type='password' placeholder='Password'
+              <InputContainer type={passwordStatus} placeholder='Password'
               onChange={(e) => { setPassword(e.target.value) }}
+              style={{ width: "70%" }}
               />
+              <VisibilityContainer >
+                    <img src={openEyeImg} alt="" srcset="" style={{width: "70%", visibility: pwdEyeOpenState}} onClick={handleClick}  />
+                    <img src={closeEyeImg} alt="" srcset="" style={{width: "80%", position: "absolute", top: "5px", visibility: pwdEyeCloseState}} onClick={handleClick} />
+              </VisibilityContainer>
             </PasswordContainer>
             <ForgotPasswordContainer>
               Forgot Password?

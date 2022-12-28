@@ -3,7 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import styled from 'styled-components';
 import editImg from "../images/edit.png";
 import deleteImg from "../images/delete.png";
-import openEyeImg from "../images/eyeOpen.png";
+
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { setDeleteState } from '../context/features/url/deleteSlice';
@@ -11,7 +11,9 @@ import { setPasswordId } from '../context/features/url/passwordIDSlice';
 import { setAccountNameState } from '../context/features/url/passwordInfoStates/accountNameSlice';
 import { setUserNameState } from '../context/features/url/passwordInfoStates/userNameSlice';
 import { setPasswordState } from '../context/features/url/passwordInfoStates/passwordSlice';
-import { setUpdateState } from '../context/features/url/updateSlice';
+import { setPwdEyeCloseState } from '../context/features/url/passwordInfoStates/pwdEyeCloseSlice';
+import { setPwdEyeOpenState } from '../context/features/url/passwordInfoStates/pwdEyeOpenSlice';
+import { useState } from 'react';
 
 
 
@@ -107,16 +109,7 @@ const PasswordContainer = styled.div`
     align-items: center;
 
 `
-const VisibilityContainer = styled.div`
-    // outline: 2px solid blue;
-    width: 15%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    
 
-`
 const ActionContainer = styled.div`
     // outline: 2px solid blue;
     width: 10%;
@@ -147,10 +140,28 @@ function Password({id, userName, accountName, password}) {
     const { userid } = useParams();
     
     const dispatch = useDispatch();
-    const handleClick = () => {
+    const pwdEyeCloseState = useSelector((state) => state.pwdEyeClose.value);
+    const pwdEyeOpenState = useSelector((state) => state.pwdEyeOpen.value);
+    const eyeID = useSelector((state) => state.passwordId.value);
+    const [eyeId, setEyeId] = useState("");
+
+    const handleClick = async () => {
+        dispatch(setPasswordId(id));
+        setEyeId(id);
+        console.log(setPasswordId(id).payload);
+        console.log(eyeId);
+            if(pwdEyeCloseState === "visible" && eyeID === eyeId){
+                dispatch(setPwdEyeCloseState("hidden"));
+                dispatch(setPwdEyeOpenState("visible"));
+            }else{
+                dispatch(setPwdEyeCloseState("visible"));
+                dispatch(setPwdEyeOpenState("hidden"));
+            }
+
+        
         async function revealPassword(){
             // const response = await axios.post(`https://passerver.onrender.com/api/user/accounts/${userid}/emails/decrypt-password`);
-            console.log("clicked");
+            // console.log("clicked");
         }
         revealPassword();
         
@@ -189,9 +200,9 @@ function Password({id, userName, accountName, password}) {
             </AccountNameContainer>
             <AccountDetailsContainer>
                 <PasswordContainer>
-                    {password?password: "XXXXXX"}
+                    {password?password:"XXXXXX"}
                 </PasswordContainer>
-                <VisibilityContainer onClick={handleClick}><img src={openEyeImg} alt="" srcset="" style={{width: "100%"}} /></VisibilityContainer>
+                
             </AccountDetailsContainer>
         </InfoContainer>
         <ActionContainer>

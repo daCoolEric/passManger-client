@@ -7,6 +7,8 @@ import userNameReducer from './features/url/passwordInfoStates/userNameSlice';
 import passwordReducer from './features/url/passwordInfoStates/passwordSlice';
 import confirmPasswordReducer from './features/url/passwordInfoStates/confirmPasswordSlice';
 import updateReducer from './features/url/updateSlice';
+import pwdEyeCloseReducer from './features/url/passwordInfoStates/pwdEyeCloseSlice';
+import pwdEyeOpenReducer from './features/url/passwordInfoStates/pwdEyeOpenSlice';
 
 
 export const store = configureStore({
@@ -19,6 +21,8 @@ export const store = configureStore({
     password: passwordReducer,
     confirmPassword: confirmPasswordReducer,
     update: updateReducer,
+    pwdEyeClose: pwdEyeCloseReducer,
+    pwdEyeOpen: pwdEyeOpenReducer
 
     
   },
