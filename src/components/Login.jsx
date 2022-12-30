@@ -188,10 +188,11 @@ function Login() {
   const dispatch = useDispatch();
 
   const handleClick = async () => {
-        if(pwdEyeCloseState === "visible"){
+        if(pwdEyeCloseState === "visible" && password !== ''){
             dispatch(setPwdEyeCloseState("hidden"));
             dispatch(setPwdEyeOpenState("visible"));
-            setPasswordStatus("text");
+              setPasswordStatus("text");
+              
         }else{
             dispatch(setPwdEyeCloseState("visible"));
             dispatch(setPwdEyeOpenState("hidden"));
@@ -243,7 +244,7 @@ function Login() {
             <PasswordContainer>
             <IconBox><img src={padlockImg} alt="email icon" style={{ width: "80%" }} /></IconBox>
               <InputContainer type={passwordStatus} placeholder='Password'
-              onChange={(e) => { setPassword(e.target.value) }}
+              onChange={(e) => { setPassword(e.target.value)  }}
               style={{ width: "70%" }}
               />
               <VisibilityContainer >

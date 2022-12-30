@@ -135,6 +135,9 @@ function HomePage() {
   const loaderState = useSelector((state) => state.loader.value);
   const dispatch = useDispatch();
   const { userid } = useParams();
+  const [allAccounts, setAllAccounts] = useState([]);
+  const [accountsId, setAccountsId] = useState([]);
+
   const [loader, setLoader] = useState('hidden');
   const [deleteAlert, setDeleteAlert] = useState('visible');
   useEffect(() => {
@@ -182,7 +185,7 @@ function HomePage() {
 
   }
 
-  const [allAccounts, setAllAccounts] = useState([]);
+  
   // console.log(allAccounts);
   return (
     <Wrapper>
@@ -196,16 +199,22 @@ function HomePage() {
           <MainContainer>
             {allAccounts.map(account => {
               // console.log(account._id);
+                // setAccountsId(account._id);
+                // console.log(accountsId);
               return (
                 <Password 
                 key = {account._id} 
                 id= {account._id}
                 accountName = {account.accountName}
                 userName = {account.userName}
-                password = {account.password || account.passcode}
+                password = {account.passcode}
+                iv={account.iv}
+                sk={account.sk}
                 /> 
               )
-            })}
+            })
+           
+            }
             
            <Link to={`/user/${userid}/add-password`} style={{ textDecoration: "none"}}>
             <AddPassword />

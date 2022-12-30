@@ -8,6 +8,16 @@ import userImg from '../images/user.png';
 import spinner from '../images/Spinner-1s-200px.gif'
 import axios from 'axios';
 import { useState } from 'react';
+import openEyeImg from "../images/eyeOpen.png";
+import closeEyeImg  from "../images/eyeClose.png";
+import { useDispatch, useSelector } from 'react-redux';
+import { setPasswordId } from '../context/features/url/passwordIDSlice';
+import { setPwdEyeOpenState } from '../context/features/url/passwordInfoStates/pwdEyeOpenSlice';
+import { setPwdEyeCloseState } from '../context/features/url/passwordInfoStates/pwdEyeCloseSlice';
+import { setConfirmPwdEyeOpenState } from '../context/features/url/confirmPwdEyeOpenSlice';
+import { setConfirmPwdEyeCloseState } from '../context/features/url/confirmPwdEyeCloseSlice';
+
+
 
 const Wrapper = styled.div`
   // outline: 2px solid red;
@@ -94,6 +104,18 @@ const PasswordContainer = styled.div`
   border-bottom: 2px solid #6a3cf7;
 `
 
+const VisibilityContainer = styled.div`
+    // outline: 2px solid blue;
+    width: 11%;
+    height: 100%;
+    display: flex;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    
+
+`
+
 const SubmitSection = styled.div`
   // outline: 2px solid red;
   width: 100%;
@@ -160,7 +182,46 @@ function Register() {
   const [password,setPassword] = useState('');
   const [confirmPass,setConfirmPass] = useState('');
   const [loader, setLoader] = useState('hidden');
-  
+  const pwdEyeCloseState = useSelector((state) => state.pwdEyeClose.value);
+  const pwdEyeOpenState = useSelector((state) => state.pwdEyeOpen.value);
+  const confirmPwdEyeOpenState = useSelector((state) => state.confirmPwdEyeOpen.value);
+  const confirmPwdEyeCloseState = useSelector((state) => state.confirmPwdEyeClose.value);
+
+  const [passwordStatus,setPasswordStatus] = useState('password');
+  const [confirmPasswordStatus,setConfirmPasswordStatus] = useState('password');
+  const dispatch = useDispatch();
+
+  const handlePasswordClick = () => {
+        if(pwdEyeCloseState === "visible" && password !== '' ){
+            dispatch(setPwdEyeCloseState("hidden"));
+           
+            dispatch(setPwdEyeOpenState("visible"));
+            setPasswordStatus("text");
+              
+        }else{
+            dispatch(setPwdEyeCloseState("visible"));
+            dispatch(setPwdEyeOpenState("hidden"));
+            setPasswordStatus("password");
+        }
+
+    
+   
+    
+    }
+
+const handleConfirmPasswordClick =() => {
+  if(confirmPwdEyeCloseState === "visible" && confirmPass !== ''){
+    dispatch(setConfirmPwdEyeCloseState("hidden"));
+    dispatch(setConfirmPwdEyeOpenState("visible"));
+    setConfirmPasswordStatus("text");
+      
+}else{
+    dispatch(setConfirmPwdEyeCloseState("visible"));
+    dispatch(setConfirmPwdEyeOpenState("hidden"));
+    setConfirmPasswordStatus("password");
+}
+
+}
   const handleSubmit = () => {
     if(password !== confirmPass){
       alert("The two passwords are not the same");
@@ -213,15 +274,25 @@ function Register() {
             </PasswordContainer>
             <PasswordContainer>
             <IconBox><img src={padlockImg} alt="email icon" style={{ width: "80%" }} /></IconBox>
-              <InputContainer type='password'   placeholder='Password'
+              <InputContainer type={passwordStatus}   placeholder='Password'
               onChange={(e) => {setPassword(e.target.value)}}
+              style={{ width: "70%" }}
               />
+              <VisibilityContainer >
+                    <img src={openEyeImg} alt="" srcset="" style={{width: "70%", visibility: pwdEyeOpenState}} onClick={handlePasswordClick}  />
+                    <img src={closeEyeImg} alt="" srcset="" style={{width: "80%", position: "absolute", top: "5px", visibility: pwdEyeCloseState}} onClick={handlePasswordClick} />
+              </VisibilityContainer>
             </PasswordContainer>
             <PasswordContainer>
             <IconBox><img src={padlockImg} alt="email icon" style={{ width: "80%" }} /></IconBox>
-              <InputContainer type='password'  placeholder='Confirm Password'
+              <InputContainer type={confirmPasswordStatus}   placeholder='Confirm Password'
               onChange={(e) => {setConfirmPass(e.target.value)}}
+              style={{ width: "70%" }}
               />
+              <VisibilityContainer >
+                    <img src={openEyeImg} alt="" srcset="" style={{width: "70%", visibility: confirmPwdEyeOpenState}} onClick={handleConfirmPasswordClick}  />
+                    <img src={closeEyeImg} alt="" srcset="" style={{width: "80%", position: "absolute", top: "5px", visibility: confirmPwdEyeCloseState}} onClick={handleConfirmPasswordClick} />
+              </VisibilityContainer>
             </PasswordContainer>
             
           </PersonalInfo>

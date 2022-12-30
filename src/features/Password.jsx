@@ -14,6 +14,7 @@ import { setPasswordState } from '../context/features/url/passwordInfoStates/pas
 import { setPwdEyeCloseState } from '../context/features/url/passwordInfoStates/pwdEyeCloseSlice';
 import { setPwdEyeOpenState } from '../context/features/url/passwordInfoStates/pwdEyeOpenSlice';
 import { useState } from 'react';
+import { setDecryptedPass } from '../context/features/url/decryptedPassSlice';
 
 
 
@@ -136,32 +137,27 @@ const DeleteContainer = styled.div`
 `
 
 
-function Password({id, userName, accountName, password}) {
+function Password({id, userName, accountName, password, iv, sk }) {
+    const [accountsId, setAccountsId] = useState([]);
     const { userid } = useParams();
+    const decryptedPassState = useSelector((state) => state.decryptedPass.value);
     
     const dispatch = useDispatch();
-    const pwdEyeCloseState = useSelector((state) => state.pwdEyeClose.value);
-    const pwdEyeOpenState = useSelector((state) => state.pwdEyeOpen.value);
-    const eyeID = useSelector((state) => state.passwordId.value);
-    const [eyeId, setEyeId] = useState("");
+    
 
     const handleClick = async () => {
         dispatch(setPasswordId(id));
-        setEyeId(id);
-        console.log(setPasswordId(id).payload);
-        console.log(eyeId);
-            if(pwdEyeCloseState === "visible" && eyeID === eyeId){
-                dispatch(setPwdEyeCloseState("hidden"));
-                dispatch(setPwdEyeOpenState("visible"));
-            }else{
-                dispatch(setPwdEyeCloseState("visible"));
-                dispatch(setPwdEyeOpenState("hidden"));
-            }
-
         
         async function revealPassword(){
-            // const response = await axios.post(`https://passerver.onrender.com/api/user/accounts/${userid}/emails/decrypt-password`);
-            // console.log("clicked");
+            const response = await axios.post(`https://passerver.onrender.com/api/user/accounts/${userid}/emails/decrypt-password`, {
+                id,
+                EncryptedData: password,
+                iv,
+                sk
+            });
+           
+            console.log(response);
+            dispatch(setDecryptedPass(response.data.data));
         }
         revealPassword();
         
@@ -199,8 +195,10 @@ function Password({id, userName, accountName, password}) {
                 </UserNameContainer>
             </AccountNameContainer>
             <AccountDetailsContainer>
-                <PasswordContainer>
-                    {password?password:"XXXXXX"}
+                <PasswordContainer onClick={handleClick} contID={id}>
+                    
+                    {decryptedPassState === "" ?"XXXXXX": decryptedPassState}
+                    
                 </PasswordContainer>
                 
             </AccountDetailsContainer>
