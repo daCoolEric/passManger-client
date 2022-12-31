@@ -312,7 +312,7 @@ function HomePage() {
 
   async function decryptPassword(encryptedPassword){
     const response = await axios.post(`https://passerver.onrender.com/api/user/accounts/${userid}/emails/decrypt-password`, {
-        // id: encryptedPassword.id,
+        id: encryptedPassword.id,
         EncryptedData: encryptedPassword.password,
         iv: encryptedPassword.iv,
         sk: encryptedPassword.sk,
