@@ -223,10 +223,12 @@ function EditPassword() {
     dispatch(setUpdateState("hidden"));
     dispatch(setLoaderState("visible"));
     
+    
     async function editPassword() {
       try {
-        // const response = await axios.patch(`http://localhost:5500/api/user/accounts/${userid}/emails/${passwordId}`, {
-         const response = await axios.patch(`https://passerver.onrender.com/api/user/accounts/${userid}/emails/${passwordId}`, {
+        console.log(passwordId);
+        const response = await axios.patch(`http://localhost:5500/api/user/accounts/${userid}/emails/${passwordId}`, {
+        //  const response = await axios.patch(`https://passerver.onrender.com/api/user/accounts/${userid}/emails/${passwordId}`, {
           accountName: accountName,  
           userName: userName,
           password: password,
@@ -257,6 +259,7 @@ function EditPassword() {
               <InputContainer type='text' placeholder='Account Name'
               onChange={(e) => {dispatch(setAccountNameState(e.target.value))} } value={accountName}
               />
+            {/* {console.log(passwordId)} */}
             </EmailContainer>
             <PasswordContainer>
               <IconBox><img src={userImg} alt="email icon" style={{ width: "80%" }} /></IconBox>
