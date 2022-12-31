@@ -311,6 +311,7 @@ function HomePage() {
 
 
   async function decryptPassword(encryptedPassword){
+    dispatch(setPasswordId(encryptedPassword.id));
     const response = await axios.post(`https://passerver.onrender.com/api/user/accounts/${userid}/emails/decrypt-password`, {
         id: encryptedPassword.id,
         EncryptedData: encryptedPassword.password,
@@ -353,8 +354,8 @@ const handleEdit = (accountName, password, id, userName) => {
   dispatch(setAccountNameState(accountName));
   dispatch(setUserNameState(userName));
   dispatch(setPasswordState(password));
-  dispatch(setPasswordId(id));
- console.log(passwordId);
+ 
+  console.log(passwordId);
 
  
  
@@ -408,10 +409,13 @@ const handleEdit = (accountName, password, id, userName) => {
                       </AccountDetailsContainer>
                   </InfoContainer>
                   <ActionContainer key={account._id + "actioncont"}>
-                      <EditContainer onClick={()=>{handleEdit(account.accountName, account.decryptedPassword, account._id, account.userName)}} 
+                      <EditContainer onClick={()=>{handleEdit(account.accountName, account.decryptedPassword, account._id, account.userName);
+                       dispatch(setPasswordId(account._id));
+                      
+                    }} 
                       
                       key={account._id + "editcont"}>
-                          <Link to={`/user/${userid}/edit-password`} style={{ textDecoration: "none"}} key={account._id + "linkcont"}>
+                          <Link to={`/user/${userid}/edit-password/${passwordId}`} style={{ textDecoration: "none"}} key={account._id + "linkcont"}>
                               <img src={editImg} alt="" srcset="" style={{width: "100%"}} key={account._id + "img"}/>
                           </Link>
                       </EditContainer>

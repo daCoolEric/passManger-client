@@ -16,7 +16,7 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/user/:userid/home" element={<HomePage />} />
         <Route path="/user/:userid/add-password" element={<AddPassword /> } />
-        <Route path="/user/:userid/edit-password" element={<EditPassword /> } />
+        <Route path="/user/:userid/edit-password/:passwordId" element={<EditPassword /> } />
       </Routes>
     </BrowserRouter>
   );

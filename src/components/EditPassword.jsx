@@ -216,9 +216,10 @@ function EditPassword() {
   const userName = useSelector((state) => state.userName.value);
   const password = useSelector((state) => state.password.value);
   const confirmPassword = useSelector((state) => state.confirmPassword.value);
-  const passwordId = useSelector((state) => state.passwordId.value);
+  // const passwordId = useSelector((state) => state.passwordId.value);
   const dispatch = useDispatch();
-  
+  const { passwordId } = useParams();
+
   const handleSubmit = () => {
     dispatch(setUpdateState("hidden"));
     dispatch(setLoaderState("visible"));
@@ -227,8 +228,9 @@ function EditPassword() {
     async function editPassword() {
       try {
         console.log(passwordId);
-        // const response = await axios.patch(`http://localhost:5500/api/user/accounts/${userid}/emails/${passwordId}`, {
-         const response = await axios.patch(`https://passerver.onrender.com/api/user/accounts/${userid}/emails/${passwordId}`, {
+        //var myId = JSON.parse(id);
+        // const response = await axios.patch(`http://localhost:5500/api/user/accounts/${userid}/emails/${passwordId}/update-email`, {
+         const response = await axios.patch(`https://passerver.onrender.com/api/user/accounts/${userid}/emails/${passwordId}/update-email`, {
           accountName: accountName,  
           userName: userName,
           password: password,
@@ -295,7 +297,7 @@ function EditPassword() {
               </AlertMessage>
               <ButtonContainer>
                 <Button style={{backgroundColor: "#FF3131"}}
-                onClick={handleSubmit}
+                onClick={handleSubmit }
                 >
                   Yes
                 </Button>
