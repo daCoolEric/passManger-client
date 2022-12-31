@@ -12,6 +12,8 @@ import pwdEyeOpenReducer from './features/url/passwordInfoStates/pwdEyeOpenSlice
 import confirmPwdEyeOpenReducer from './features/url/confirmPwdEyeOpenSlice';
 import confirmPwdEyeCloseReducer from './features/url/confirmPwdEyeCloseSlice';
 import decryptedPassSliceReducer from './features/url/decryptedPassSlice';
+import passwordListSliceReducer from './features/url/PasswordListSlice';
+import decryptPassIDSliceReducer from './features/url/decryptPassIDSlice';
 
 
 export const store = configureStore({
@@ -29,6 +31,7 @@ export const store = configureStore({
     confirmPwdEyeOpen: confirmPwdEyeOpenReducer,
     confirmPwdEyeClose: confirmPwdEyeCloseReducer,
     decryptedPass: decryptedPassSliceReducer,
-    
+    passwordList: passwordListSliceReducer,
+    decryptPasswordId: decryptPassIDSliceReducer,
   },
 })

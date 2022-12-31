@@ -225,7 +225,8 @@ function EditPassword() {
     
     async function editPassword() {
       try {
-        const response = await axios.patch(`https://passerver.onrender.com/api/user/accounts/${userid}/emails/${passwordId}`, {
+        // const response = await axios.patch(`http://localhost:5500/api/user/accounts/${userid}/emails/${passwordId}`, {
+         const response = await axios.patch(`https://passerver.onrender.com/api/user/accounts/${userid}/emails/${passwordId}`, {
           accountName: accountName,  
           userName: userName,
           password: password,

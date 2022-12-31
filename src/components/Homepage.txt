@@ -17,12 +17,6 @@ import { useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { setDeleteState } from '../context/features/url/deleteSlice';
 import { setLoaderState } from '../context/features/url/loaderSlice';
-import { setUserNameState } from '../context/features/url/passwordInfoStates/userNameSlice';
-import { setPasswordState } from '../context/features/url/passwordInfoStates/passwordSlice';
-import { setPasswordId } from '../context/features/url/passwordIDSlice';
-import { setAccountNameState } from '../context/features/url/passwordInfoStates/accountNameSlice';
-
-
 
 
 
@@ -276,6 +270,11 @@ function HomePage() {
         console.error(error);
       }
     }
+    // async function revealPassword(){
+    //   // const response = await axios.post(`https://passerver.onrender.com/api/user/accounts/${userid}/emails/decrypt-password`);
+    //   console.log("clicked");
+    // }
+    // revealPassword();
     getAccounts();
   }, [userid])
 
@@ -286,28 +285,26 @@ function HomePage() {
     dispatch(setLoaderState("visible"));
     dispatch(setDeleteState("hidden"));
     // console.log(passwordId);
-
-    async function deletePassword() {
-      try {
-        const response = await axios.delete(`https://passerver.onrender.com/api/user/accounts/${userid}/emails/${passwordId}`,{
-          id: passwordId,
-          userID: userid
-        });
-        window.location = `/user/${userid}/home`;
-        console.log(response);
-        setAllAccounts(response.data);
-        
-      } catch (error) {
-        console.error(error);
-      }
-    }
-    deletePassword();
     
    
 
   }
 
-  
+  async function deletePassword() {
+    try {
+      const response = await axios.delete(`https://passerver.onrender.com/api/user/accounts/${userid}/emails/${passwordId}`,{
+        id: passwordId,
+        userID: userid
+      });
+      window.location = `/user/${userid}/home`;
+      console.log(response);
+      setAllAccounts(response.data);
+      
+    } catch (error) {
+      console.error(error);
+    }
+  }
+  deletePassword();
 
 
   async function decryptPassword(encryptedPassword){
@@ -339,23 +336,18 @@ function HomePage() {
 }
 decryptPassword();
 
-const handleDelete = (id) => {
+const handleDelete = () => {
   dispatch(setDeleteState("visible"));
   dispatch(setPasswordId(id));
  
-
  
 }
 
-
-
-const handleEdit = (accountName, password, id, userName) => {
+const handleEdit = () => {
   dispatch(setAccountNameState(accountName));
   dispatch(setUserNameState(userName));
   dispatch(setPasswordState(password));
   dispatch(setPasswordId(id));
-
-
  
  
  
@@ -408,15 +400,13 @@ const handleEdit = (accountName, password, id, userName) => {
                       </AccountDetailsContainer>
                   </InfoContainer>
                   <ActionContainer key={account._id + "actioncont"}>
-                      <EditContainer onClick={()=>{handleEdit(account.accountName, account.decryptedPassword, account._id, account.userName)}} 
-                      
-                      key={account._id + "editcont"}>
+                      <EditContainer onClick={()=>{handleEdit()}} key={account._id + "editcont"}>
                           <Link to={`/user/${userid}/edit-password`} style={{ textDecoration: "none"}} key={account._id + "linkcont"}>
                               <img src={editImg} alt="" srcset="" style={{width: "100%"}} key={account._id + "img"}/>
                           </Link>
                       </EditContainer>
                   
-                      <DeleteContainer onClick={()=>{handleDelete(account._id)} } key={account._id + "deletecont"}><img src={deleteImg} alt="" srcset="" style={{width: "100%"}} key={account._id + "delete"} /></DeleteContainer>  
+                      <DeleteContainer onClick={()=>{deletePassword()} } key={account._id + "deletecont"}><img src={deleteImg} alt="" srcset="" style={{width: "100%"}} key={account._id + "delete"} /></DeleteContainer>  
                   </ActionContainer>
                 </PasswordWrapper>
                 )

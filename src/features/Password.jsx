@@ -15,6 +15,7 @@ import { setPwdEyeCloseState } from '../context/features/url/passwordInfoStates/
 import { setPwdEyeOpenState } from '../context/features/url/passwordInfoStates/pwdEyeOpenSlice';
 import { useState } from 'react';
 import { setDecryptedPass } from '../context/features/url/decryptedPassSlice';
+import { setDecrytPasswordId } from '../context/features/url/decryptPassIDSlice';
 
 
 
@@ -137,10 +138,12 @@ const DeleteContainer = styled.div`
 `
 
 
-function Password({id, userName, accountName, password, iv, sk }) {
+function Password({id, userName, accountName, password, decryptedPassword, iv, sk }) {
     const [accountsId, setAccountsId] = useState([]);
     const { userid } = useParams();
     const decryptedPassState = useSelector((state) => state.decryptedPass.value);
+    const passwordIdState = useSelector((state) => state.passwordId.value);
+    const decryptPasswordIdState = useSelector((state) => state.decryptPasswordId.value);
     
     const dispatch = useDispatch();
     
@@ -155,9 +158,12 @@ function Password({id, userName, accountName, password, iv, sk }) {
                 iv,
                 sk
             });
-           
+        
             console.log(response);
             dispatch(setDecryptedPass(response.data.data));
+            dispatch(setDecrytPasswordId(response.data.id));
+
+           
         }
         revealPassword();
         
@@ -196,8 +202,8 @@ function Password({id, userName, accountName, password, iv, sk }) {
             </AccountNameContainer>
             <AccountDetailsContainer>
                 <PasswordContainer onClick={handleClick} contID={id}>
+               { passwordIdState === decryptPasswordIdState? decryptedPassState: decryptedPassword}
                     
-                    {decryptedPassState === "" ?"XXXXXX": decryptedPassState}
                     
                 </PasswordContainer>
                 
