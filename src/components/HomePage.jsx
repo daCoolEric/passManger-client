@@ -8,6 +8,9 @@ import bgImg from '../images/bg.png';
 import { useEffect } from 'react';
 import axios from 'axios';
 import alertIcon from '../images/alert-icon-1562.png';
+import emailLogo from "../images/emaill.png";
+import ewalletLogo from "../images/ewallet.png";
+import socialMediaLogo from "../images/socialmedia.png";
 import spinner from '../images/Spinner-1s-200px.gif';
 import editImg from "../images/edit.png";
 import editImgDisabled from "../images/edit-disabled.png";
@@ -162,10 +165,12 @@ const LogoContainer = styled.div`
 
 `
 const Logo = styled.div`
-    // outline: 2px solid red;
+    //  outline: 2px solid red;
     width: 100%;
     height: 50%;
     display: flex;
+    justify-content: center;
+    align-items: center;
 
 `
 const Fav = styled.div`
@@ -265,12 +270,24 @@ function HomePage() {
   const [accountsId, setAccountsId] = useState([]);
   const [loader, setLoader] = useState('hidden');
   const [deleteAlert, setDeleteAlert] = useState('visible');
+
+
+  const Logos = {
+    email: emailLogo,
+    "social media": socialMediaLogo,
+    ewallet: ewalletLogo
+  }
+
+
+
   useEffect(() => {
     async function getAccounts() {
       try {
         const response = await axios.get(`https://passerver.onrender.com/api/user/accounts/${userid}/all`);
         console.log(response);
         setAllAccounts(response.data);
+
+       
         
         
       } catch (error) {
@@ -381,8 +398,10 @@ const handleEdit = (accountName, password, userName) => {
                 id= {account._id}
                 >
                   <LogoContainer key={account._id + "logocont"}>
-                      <Logo key={account._id + "logo"}>Logo</Logo>
-                      <Fav key={account._id + "favcont"}>Fav Status</Fav>
+                      <Logo key={account._id + "logo"}>
+                        <img src={Logos[account.accountName]} alt="" srcset="" style={{width: "80%", filter: "grayscale:(100%)"}}/>
+                      </Logo>
+                      <Fav key={account._id + "favcont"}></Fav>
                   </LogoContainer>
                   <InfoContainer key={account._id + + "infocont"}>
                       <AccountNameContainer key={account._id + "accountnamecont"}>
@@ -463,7 +482,8 @@ const handleEdit = (accountName, password, userName) => {
             </DeleteContent>
         </LoadingModal>
         <LoadingModal style={{visibility: loaderState }}>
-            <LoadingContent> 
+            <LoadingContent>
+              <div>Loading....</div> 
               <img src={spinner} alt="" style={{width: "25%"}} />
             </LoadingContent>
         </LoadingModal>

@@ -23,7 +23,7 @@ const LogoContainer = styled.div`
 
 const MenuContainer = styled.div`
   // outline: 2px solid red;
-  height: 75%;
+  height: 50%;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
@@ -68,11 +68,13 @@ const SocialMediaContainer = styled.div`
   align-items: center;
 `
 const LogoutContainer = styled.div`
-  // outline: 2px solid red;
-  height: 15%;
+  //  outline: 2px solid red;
+  width: 100%;
+  height: 40%;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-end;
+  
 `
 
 
@@ -80,7 +82,7 @@ function SideBar() {
   return (
     <Wrapper>
       <LogoContainer><img src={logo} alt="" srcset="" style={{
-        width: "70%"
+        width: "80%"
       }}/></LogoContainer>
       <MenuContainer>
         <FavoriteContainer><Fav /></FavoriteContainer>
@@ -90,9 +92,9 @@ function SideBar() {
         
       </MenuContainer>
       <LogoutContainer>
-      <Link to="/login" style={{width: "100%", textDecoration: "none"}}>
-        <Logout />
-      </Link>
+        <Link to="/login" style={{width: "100%", textDecoration: "none", paddingBottom: "10px"}}>
+          <Logout />
+        </Link>
         
       </LogoutContainer>
     </Wrapper>
