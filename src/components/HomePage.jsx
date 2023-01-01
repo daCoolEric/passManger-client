@@ -10,6 +10,7 @@ import axios from 'axios';
 import alertIcon from '../images/alert-icon-1562.png';
 import spinner from '../images/Spinner-1s-200px.gif';
 import editImg from "../images/edit.png";
+import editImgDisabled from "../images/edit-disabled.png";
 import deleteImg from "../images/delete.png";
 import { useState } from 'react';
 import Password from '../features/Password';
@@ -350,11 +351,11 @@ const handleDelete = (id) => {
 
 
 
-const handleEdit = (accountName, password, id, userName) => {
+const handleEdit = (accountName, password, userName) => {
   dispatch(setAccountNameState(accountName));
   dispatch(setUserNameState(userName));
   dispatch(setPasswordState(password));
- 
+  // dispatch(setPasswordId(id));
   console.log(passwordId);
 
  
@@ -392,14 +393,14 @@ const handleEdit = (accountName, password, id, userName) => {
                               {account.userName}
                           </UserNameContainer>
                       </AccountNameContainer>
-                      <AccountDetailsContainer onClick={() => {
+                      <AccountDetailsContainer onClick={account.decryptedPassword === "XXXXXXXX" ? () => {
                                 decryptPassword({
                                     id: account._id,
                                     password: account.passcode,
                                     iv: account.iv,
                                     sk: account.sk,
                                 });
-                              }}  key={account._id + "accountdetailscont"}>
+                              }: null }  key={account._id + "accountdetailscont"}>
                           <PasswordContainer key={account._id + "passwordcont"}>
                               
                               {account.decryptedPassword}
@@ -409,15 +410,21 @@ const handleEdit = (accountName, password, id, userName) => {
                       </AccountDetailsContainer>
                   </InfoContainer>
                   <ActionContainer key={account._id + "actioncont"}>
-                      <EditContainer onClick={()=>{handleEdit(account.accountName, account.decryptedPassword, account._id, account.userName);
-                       dispatch(setPasswordId(account._id));
+                      <EditContainer onClick={()=>{
+                        handleEdit(account.accountName, account.decryptedPassword, account.userName);
+         
+                       
                       
                     }} 
                       
                       key={account._id + "editcont"}>
+                        {account.decryptedPassword === "XXXXXXXX" ? <Link to={`/user/${userid}/home`} style={{ textDecoration: "none"}} key={account._id + "linkcont"}>
+                            <img src={editImgDisabled} alt="" srcset="" style={{width: "100%"}} key={account._id + "img"}/>
+                          </Link>: 
                           <Link to={`/user/${userid}/edit-password/${passwordId}`} style={{ textDecoration: "none"}} key={account._id + "linkcont"}>
-                              <img src={editImg} alt="" srcset="" style={{width: "100%"}} key={account._id + "img"}/>
+                            <img src={editImg} alt="" srcset="" style={{width: "100%"}} key={account._id + "img"}/>
                           </Link>
+                        }   
                       </EditContainer>
                   
                       <DeleteContainer onClick={()=>{handleDelete(account._id)} } key={account._id + "deletecont"}><img src={deleteImg} alt="" srcset="" style={{width: "100%"}} key={account._id + "delete"} /></DeleteContainer>  

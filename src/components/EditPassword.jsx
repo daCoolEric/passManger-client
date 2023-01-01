@@ -229,8 +229,8 @@ function EditPassword() {
       try {
         console.log(passwordId);
         //var myId = JSON.parse(id);
-        // const response = await axios.patch(`http://localhost:5500/api/user/accounts/${userid}/emails/${passwordId}/update-email`, {
-         const response = await axios.patch(`https://passerver.onrender.com/api/user/accounts/${userid}/emails/${passwordId}/update-email`, {
+        const response = await axios.patch(`http://localhost:5500/api/user/accounts/${userid}/emails/${passwordId}/update-email`, {
+        //  const response = await axios.patch(`https://passerver.onrender.com/api/user/accounts/${userid}/emails/${passwordId}/update-email`, {
           accountName: accountName,  
           userName: userName,
           password: password,
