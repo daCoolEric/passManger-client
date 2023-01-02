@@ -70,9 +70,10 @@ const MainBarContainer = styled.div`
 const MainContainer = styled.div`
 //  outline: 2px solid red;
   height: 82vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  // display: flex;
+  // flex-direction: column;
+  // align-items: center;
+  
   overflow: scroll;
 
 `
@@ -157,12 +158,12 @@ const Button = styled.div`
 const PasswordWrapper = styled.div`
     // outline: 2px solid blue;
     width: 95%;
-    height: 200px;
+    height: 17%;
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
     align-items: center;
-    margin-top: 17px;
+    margin: 17px auto 0;
     background-color: #EEEEEE;
     border-radius: 8px;
     border: 2px solid #6a3cf7;
@@ -198,7 +199,7 @@ const Fav = styled.div`
 const InfoContainer = styled.div`
     // outline: 2px solid yellow;
     width: 70%;
-    height: 100%;
+    height: 90%;
     display: flex;
     flex-direction: column;
 
@@ -301,10 +302,6 @@ function HomePage() {
         (`https://passerver.onrender.com/api/user/accounts/${userid}/all`);
         console.log(response);
         setAllAccounts(response.data);
-
-       
-        
-        
       } catch (error) {
         console.error(error);
       }
