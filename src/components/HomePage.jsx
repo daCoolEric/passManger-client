@@ -158,7 +158,7 @@ const Button = styled.div`
 const PasswordWrapper = styled.div`
     // outline: 2px solid blue;
     width: 95%;
-    height: 17%;
+    height: 95px;
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
