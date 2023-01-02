@@ -82,6 +82,20 @@ const IconBox = styled.div`
   align-items: center;
 `
 
+const Select = styled.select`
+  //  outline: 2px solid red;
+  width: 90%;
+  height: 80%;
+  font-size: 20px;
+  color: #6a3cf7;
+  border-style: none;
+  outline: none;
+
+`
+const Option = styled.option`
+  font-size: 15px;
+`
+
 const InputContainer = styled.input`
   // outline: 2px solid red;
   height: 80%;
@@ -208,6 +222,7 @@ const Button = styled.div`
 
 
 function EditPassword() {
+  const [accountType,setAccountType] = useState('');
   const updateState = useSelector((state) => state.update.value);
   const loaderState = useSelector((state) => state.loader.value);
   const { userid } = useParams();
@@ -231,6 +246,7 @@ function EditPassword() {
         //var myId = JSON.parse(id);
         // const response = await axios.patch(`http://localhost:5500/api/user/accounts/${userid}/emails/${passwordId}/update-email`, {
          const response = await axios.patch(`https://passerver.onrender.com/api/user/accounts/${userid}/emails/${passwordId}/update-email`, {
+          accountType: accountType,
           accountName: accountName,  
           userName: userName,
           password: password,
@@ -256,6 +272,15 @@ function EditPassword() {
       <LoginContainer>
         <LoginContent>
           <PersonalInfo>
+            <EmailContainer>
+              <IconBox><img src={userImg} alt="email icon" style={{ width: "80%" }} /></IconBox>
+              <Select name="accountTypes" id="accountTypes" >
+                <Option >Select account type</Option>
+                <Option value="email" onClick={setAccountType("email")}>Email</Option>
+                <Option value="social media"  onClick={setAccountType("social media")}>Social Media</Option>
+                <Option value="ewallet"  onClick={setAccountType("ewallet")}>E-Wallet</Option>
+              </Select>
+            </EmailContainer>
             <EmailContainer>
               <IconBox><img src={userImg} alt="email icon" style={{ width: "80%" }} /></IconBox>
               <InputContainer type='text' placeholder='Account Name'

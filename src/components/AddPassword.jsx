@@ -72,6 +72,20 @@ const IconBox = styled.div`
   align-items: center;
 `
 
+const Select = styled.select`
+  //  outline: 2px solid red;
+  width: 90%;
+  height: 80%;
+  font-size: 20px;
+  color: #6a3cf7;
+  border-style: none;
+  outline: none;
+
+`
+const Option = styled.option`
+  font-size: 15px;
+`
+
 const InputContainer = styled.input`
   // outline: 2px solid red;
   height: 80%;
@@ -154,6 +168,7 @@ const LoadingContent = styled.div`
 
 function AddPassword() {
   const { userid } = useParams();
+  const [accountType,setAccountType] = useState('');
   const [accountName,setAccountName] = useState('');
   const [userName,setUserName] = useState('');
   const [password,setPassword] = useState('');
@@ -161,13 +176,19 @@ function AddPassword() {
   const [loader, setLoader] = useState('hidden');
   
   const handleSubmit = () => {
+    console.log(accountType);
     if(password !== confirmPass){
       alert("The two passwords are not the same");
     }
+    // if (accountType || accountName || userName || password || confirmPass === ""){
+    //   alert("The form is incomplete");
+    // }
     setLoader("visible");
     async function createUser() {
       try {
+        // const response = await axios.post(`http://localhost:5500/api/user/accounts/${userid}/emails/add-email`, {
         const response = await axios.post(`https://passerver.onrender.com/api/user/accounts/${userid}/emails/add-email`, {
+          accountType: accountType,
           accountName: accountName,  
           userName: userName,
           password: password,
@@ -194,8 +215,17 @@ function AddPassword() {
           <PersonalInfo>
             <EmailContainer>
               <IconBox><img src={userImg} alt="email icon" style={{ width: "80%" }} /></IconBox>
+              <Select name="accountTypes" id="accountTypes" onChange={(e) => setAccountType(e.target.value)}>
+                <Option >Select account type</Option>
+                <Option value="email">Email</Option>
+                <Option value="social media">Social Media</Option>
+                <Option value="ewallet">E-Wallet</Option>
+              </Select>
+            </EmailContainer>
+            <EmailContainer>
+              <IconBox><img src={userImg} alt="email icon" style={{ width: "80%" }} /></IconBox>
               <InputContainer type='text' placeholder='Account Name'
-              onChange={(e) => {setAccountName(e.target.value)} }
+              onChange={(e) => {setAccountName(e.target.value)}}
               />
             </EmailContainer>
             <PasswordContainer>
@@ -205,7 +235,7 @@ function AddPassword() {
               />
             </PasswordContainer>
             <PasswordContainer>
-              <IconBox><img src={emailImg} alt="email icon" style={{ width: "80%" }} /></IconBox>
+              <IconBox><img src={padlockImg} alt="email icon" style={{ width: "80%" }} /></IconBox>
               <InputContainer type= 'password' placeholder='Password'
               onChange={(e) => {setPassword(e.target.value)}}
               />

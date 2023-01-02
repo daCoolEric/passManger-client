@@ -19,6 +19,7 @@ import { useState } from 'react';
 import Password from '../features/Password';
 import { useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
+import Draggable from "react-draggable";
 import { setDeleteState } from '../context/features/url/deleteSlice';
 import { setLoaderState } from '../context/features/url/loaderSlice';
 import { setUserNameState } from '../context/features/url/passwordInfoStates/userNameSlice';
@@ -67,12 +68,12 @@ const MainBarContainer = styled.div`
 
 `
 const MainContainer = styled.div`
-  // outline: 2px solid red;
-  height: 93%;
+//  outline: 2px solid red;
+  height: 82vh;
   display: flex;
   flex-direction: column;
   align-items: center;
-  overflow: scroll;
+  overflow: visible;
 
 `
 const LoadingModal = styled.div`
@@ -96,6 +97,18 @@ const LoadingContent = styled.div`
   justify-content: center;
   align-items: center;
 `
+
+const Content = styled.div`
+  // outline: 2px solid red;
+  width: 100%;
+  height: 30vh;
+  background-color: rgba(255, 255, 255, 1);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+`
+
 
 const DeleteContent = styled.div`
   // outline: 2px solid red;
@@ -144,7 +157,7 @@ const Button = styled.div`
 const PasswordWrapper = styled.div`
     // outline: 2px solid blue;
     width: 95%;
-    height: 15%;
+    height: 50%;
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
@@ -152,6 +165,7 @@ const PasswordWrapper = styled.div`
     margin-top: 17px;
     background-color: #EEEEEE;
     border-radius: 8px;
+    border: 2px solid #6a3cf7;
     
 
 `
@@ -184,7 +198,7 @@ const Fav = styled.div`
 const InfoContainer = styled.div`
     // outline: 2px solid yellow;
     width: 70%;
-    height: 80%;
+    height: 100%;
     display: flex;
     flex-direction: column;
 
@@ -264,12 +278,11 @@ function HomePage() {
   const loaderState = useSelector((state) => state.loader.value);
   const dispatch = useDispatch();
   const { userid } = useParams();
-  const decryptedPassState = useSelector((state) => state.decryptedPass.value);
   const [allAccounts, setAllAccounts] = useState([]);
-  const [passwordList, setPasswordList] = useState([]);
-  const [accountsId, setAccountsId] = useState([]);
-  const [loader, setLoader] = useState('hidden');
-  const [deleteAlert, setDeleteAlert] = useState('visible');
+  
+ 
+
+
 
 
   const Logos = {
@@ -283,7 +296,9 @@ function HomePage() {
   useEffect(() => {
     async function getAccounts() {
       try {
-        const response = await axios.get(`https://passerver.onrender.com/api/user/accounts/${userid}/all`);
+        const response = await axios.get
+        // (`http://localhost:5500/api/user/accounts/${userid}/all`);
+        (`https://passerver.onrender.com/api/user/accounts/${userid}/all`);
         console.log(response);
         setAllAccounts(response.data);
 
@@ -307,7 +322,8 @@ function HomePage() {
 
     async function deletePassword() {
       try {
-        const response = await axios.delete(`https://passerver.onrender.com/api/user/accounts/${userid}/emails/${passwordId}`,{
+        console.log(passwordId);
+        const response = await axios.delete(`https://passerver.onrender.com/api/user/accounts/${userid}/emails/${passwordId}/delete-email`,{
           id: passwordId,
           userID: userid
         });
@@ -341,6 +357,7 @@ function HomePage() {
         return account._id == encryptedPassword.id
           ? {
               id: account._id,
+              accountType: account.accountType,
               accountName: account.accountName,
               userName: account.userName,
               passcode: account.password,
@@ -399,7 +416,7 @@ const handleEdit = (accountName, password, userName) => {
                 >
                   <LogoContainer key={account._id + "logocont"}>
                       <Logo key={account._id + "logo"}>
-                        <img src={Logos[account.accountName]} alt="" srcset="" style={{width: "80%", filter: "grayscale:(100%)"}}/>
+                        <img src={Logos[account.accountType]} alt="" srcset="" style={{width: "80%", filter: "grayscale:(100%)"}}/>
                       </Logo>
                       <Fav key={account._id + "favcont"}></Fav>
                   </LogoContainer>
@@ -455,7 +472,10 @@ const handleEdit = (accountName, password, userName) => {
             }
             
            <Link to={`/user/${userid}/add-password`} style={{ textDecoration: "none"}}>
-            <AddPassword />
+            
+             <AddPassword />
+            
+            
            </Link> 
           </MainContainer>
         </MainBarContainer>
@@ -483,8 +503,12 @@ const handleEdit = (accountName, password, userName) => {
         </LoadingModal>
         <LoadingModal style={{visibility: loaderState }}>
             <LoadingContent>
-              <div>Loading....</div> 
-              <img src={spinner} alt="" style={{width: "25%"}} />
+              <Content>
+                <div style={{ fontSize: "25px", fontWeight: "600"}}>Please Wait</div> 
+                <img src={spinner} alt="" style={{width: "25%"}} />
+              </Content>
+              
+              
             </LoadingContent>
         </LoadingModal>
     </Wrapper>
