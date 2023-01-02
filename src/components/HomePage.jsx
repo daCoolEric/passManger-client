@@ -73,7 +73,7 @@ const MainContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  overflow: visible;
+  overflow: scroll;
 
 `
 const LoadingModal = styled.div`
@@ -157,7 +157,7 @@ const Button = styled.div`
 const PasswordWrapper = styled.div`
     // outline: 2px solid blue;
     width: 95%;
-    height: 50%;
+    height: 200px;
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
@@ -377,7 +377,10 @@ decryptPassword();
 
 const handleDelete = (id) => {
   dispatch(setDeleteState("visible"));
-  dispatch(setPasswordId(id));
+  if(passwordId === ""){
+    dispatch(setPasswordId(id));
+  }
+  
  
 
  
