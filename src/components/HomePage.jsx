@@ -26,7 +26,7 @@ import { setUserNameState } from '../context/features/url/passwordInfoStates/use
 import { setPasswordState } from '../context/features/url/passwordInfoStates/passwordSlice';
 import { setPasswordId } from '../context/features/url/passwordIDSlice';
 import { setAccountNameState } from '../context/features/url/passwordInfoStates/accountNameSlice';
-
+import { setAccountTypeState } from '../context/features/url/passwordInfoStates/accountTypeSlice';
 
 
 
@@ -377,18 +377,17 @@ const handleDelete = (id) => {
   if(passwordId === ""){
     dispatch(setPasswordId(id));
   }
-  
- 
-
- 
+   
 }
 
 
 
-const handleEdit = (accountName, password, userName) => {
+const handleEdit = (accountType, accountName, password, userName) => {
+  dispatch(setAccountTypeState(accountType));
   dispatch(setAccountNameState(accountName));
   dispatch(setUserNameState(userName));
   dispatch(setPasswordState(password));
+  
   // dispatch(setPasswordId(id));
   console.log(passwordId);
 
@@ -447,11 +446,8 @@ const handleEdit = (accountName, password, userName) => {
                   </InfoContainer>
                   <ActionContainer key={account._id + "actioncont"}>
                       <EditContainer onClick={()=>{
-                        handleEdit(account.accountName, account.decryptedPassword, account.userName);
-         
-                       
-                      
-                    }} 
+                        handleEdit(account.accountType, account.accountName, account.decryptedPassword, account.userName); 
+                      }} 
                       
                       key={account._id + "editcont"}>
                         {account.decryptedPassword === "XXXXXXXX" ? <Link to={`/user/${userid}/home`} style={{ textDecoration: "none"}} key={account._id + "linkcont"}>

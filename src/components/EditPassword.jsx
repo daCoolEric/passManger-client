@@ -16,6 +16,7 @@ import { setPasswordState } from '../context/features/url/passwordInfoStates/pas
 import { setConfirmPasswordState } from '../context/features/url/passwordInfoStates/confirmPasswordSlice';
 import { setLoaderState } from '../context/features/url/loaderSlice';
 import { setUpdateState } from '../context/features/url/updateSlice';
+import { setAccountTypeState } from '../context/features/url/passwordInfoStates/accountTypeSlice';
 
 
 
@@ -222,11 +223,12 @@ const Button = styled.div`
 
 
 function EditPassword() {
-  const [accountType,setAccountType] = useState('');
+  // const [accountType,setAccountType] = useState('');
   const updateState = useSelector((state) => state.update.value);
   const loaderState = useSelector((state) => state.loader.value);
   const { userid } = useParams();
   const [loader, setLoader] = useState('hidden');
+  const accountType = useSelector((state) => state.accountType.value);
   const accountName = useSelector((state) => state.accountName.value);
   const userName = useSelector((state) => state.userName.value);
   const password = useSelector((state) => state.password.value);
@@ -258,12 +260,21 @@ function EditPassword() {
         console.log(response);
         // setAllAccounts(response.data);
       } catch (error) {
-        console.error(error);
+        // console.error(error);
         // alert ("You dont have have account.");
         console.log(error);
       }
     }
     editPassword();
+  }
+
+  const validateForm = () => {
+    if(password !== confirmPassword) {
+      alert("The two passwords are not the same");
+    }else{
+        dispatch(setUpdateState("visible"))
+    }
+     
   }
 
   return (
@@ -274,11 +285,11 @@ function EditPassword() {
           <PersonalInfo>
             <EmailContainer>
               <IconBox><img src={userImg} alt="email icon" style={{ width: "80%" }} /></IconBox>
-              <Select name="accountTypes" id="accountTypes" >
+              <Select name="accountTypes" id="accountTypes" onChange={(e) => dispatch(setAccountTypeState(e.target.value))}>
                 <Option >Select account type</Option>
-                <Option value="email" onClick={setAccountType("email")}>Email</Option>
-                <Option value="social media"  onClick={setAccountType("social media")}>Social Media</Option>
-                <Option value="ewallet"  onClick={setAccountType("ewallet")}>E-Wallet</Option>
+                <Option value="email" >Email</Option>
+                <Option value="social media" >Social Media</Option>
+                <Option value="ewallet" >E-Wallet</Option>
               </Select>
             </EmailContainer>
             <EmailContainer>
@@ -310,7 +321,7 @@ function EditPassword() {
             
           </PersonalInfo>
           <SubmitSection>
-            <LoginButton onClick={()=>{ password !== confirmPassword? alert("The two passwords are not the same") :dispatch(setUpdateState("visible"))}} >Update Password</LoginButton>
+            <LoginButton onClick={()=>{ validateForm()}} >Update Password</LoginButton>
             <InfoSection><span style={{marginLeft: "10px", textDecoration: "none"}}> <Link to={`/user/${userid}/home`} style={{textDecoration: "none"}}>Go Back</Link></span></InfoSection>
           </SubmitSection>
         </LoginContent>

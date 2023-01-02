@@ -14,6 +14,7 @@ import confirmPwdEyeCloseReducer from './features/url/confirmPwdEyeCloseSlice';
 import decryptedPassSliceReducer from './features/url/decryptedPassSlice';
 import passwordListSliceReducer from './features/url/PasswordListSlice';
 import decryptPassIDSliceReducer from './features/url/decryptPassIDSlice';
+import accountTypeSliceReducer from './features/url/passwordInfoStates/accountTypeSlice';
 
 
 export const store = configureStore({
@@ -33,5 +34,6 @@ export const store = configureStore({
     decryptedPass: decryptedPassSliceReducer,
     passwordList: passwordListSliceReducer,
     decryptPasswordId: decryptPassIDSliceReducer,
+    accountType: accountTypeSliceReducer,
   },
 })
